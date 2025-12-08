@@ -31,6 +31,13 @@ namespace MediaPlayerApp
             MediaFiles.Remove(mediaFile);
         }
 
+        public void SufflePlaylist()
+        {
+            Random rnd = new Random();
+            MediaFiles = MediaFiles.OrderBy(x => rnd.Next()).ToList();
+            CurrentIndex = 0;
+        }
+
         public MediaFile GetNextMedia()
         {
             if (MediaFiles.Count == 0) return null;

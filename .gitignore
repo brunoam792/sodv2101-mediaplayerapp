@@ -3,8 +3,9 @@
 ##
 ## Get latest from 
 
-bin
-obj
+bin**/
+obj**/
+.vs**/
 
 # User-specific files
 *.rsuser

@@ -29,7 +29,8 @@ namespace MediaPlayerApp
 
         public void LoadPlaylist(string filePath)
         {
-            // Load playlist from file
+            Playlist playlist = new Playlist(filePath);
+            Playlists.Add(playlist);
         }
 
         public void SavePlaylist(Playlist playlist)

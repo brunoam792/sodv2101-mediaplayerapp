@@ -410,5 +410,11 @@ namespace MediaPlayerApp
             else
                 return Color.FromArgb(255, v, p, q);
         }
+
+        private void buttonShuffle_Click(object sender, EventArgs e)
+        {
+            playlistManager.CurrentPlaylist.Shuffle = !playlistManager.CurrentPlaylist.Shuffle;
+            buttonShuffle.BackColor = playlistManager.CurrentPlaylist.Shuffle ? Color.LightGreen : SystemColors.Control;
+        }
     }
 }

@@ -66,6 +66,7 @@
             videoPanel = new Panel();
             visualizationBox = new PictureBox();
             visualizationTimer = new System.Windows.Forms.Timer(components);
+            buttonShuffle = new Button();
             ((System.ComponentModel.ISupportInitialize)seekBar).BeginInit();
             controlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)volumeSlider).BeginInit();
@@ -110,6 +111,7 @@
             // 
             // controlPanel
             // 
+            controlPanel.Controls.Add(buttonShuffle);
             controlPanel.Controls.Add(btnPrevious);
             controlPanel.Controls.Add(btnPlay);
             controlPanel.Controls.Add(btnPause);
@@ -227,6 +229,16 @@
             // 
             visualizationTimer.Interval = 50;
             // 
+            // buttonShuffle
+            // 
+            buttonShuffle.Location = new Point(606, 9);
+            buttonShuffle.Name = "buttonShuffle";
+            buttonShuffle.Size = new Size(127, 40);
+            buttonShuffle.TabIndex = 5;
+            buttonShuffle.Text = "Shuffle ⇄";
+            buttonShuffle.UseVisualStyleBackColor = true;
+            buttonShuffle.Click += buttonShuffle_Click;
+            // 
             // MediaPlayerForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -256,5 +268,7 @@
         }
 
         #endregion
+
+        private Button buttonShuffle;
     }
 }
