@@ -97,7 +97,7 @@ namespace MediaPlayerApp
             UpdateUI();
         }
 
-       private void PlayNextTrackLogic()
+        private void PlayNextTrackLogic()
         {
             var nextMedia = playlistManager.CurrentPlaylist.GetNextMedia();
             if (nextMedia != null)
@@ -106,7 +106,7 @@ namespace MediaPlayerApp
                 playbackController.Play();
                 UpdatePlaylistSelection();
                 UpdateUI();
-                StartVisualization(); 
+                StartVisualization();
             }
             else
             {
@@ -124,7 +124,7 @@ namespace MediaPlayerApp
             PlayNextTrackLogic();
         }
 
-   
+
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
@@ -432,6 +432,11 @@ namespace MediaPlayerApp
         {
             playlistManager.CurrentPlaylist.Shuffle = !playlistManager.CurrentPlaylist.Shuffle;
             buttonShuffle.BackColor = playlistManager.CurrentPlaylist.Shuffle ? Color.LightGreen : SystemColors.Control;
+        }
+
+        private void MediaPlayerForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
