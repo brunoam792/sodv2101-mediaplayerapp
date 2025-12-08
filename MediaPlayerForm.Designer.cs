@@ -53,6 +53,7 @@
             lblTime = new Label();
             seekBar = new TrackBar();
             controlPanel = new Panel();
+            buttonShuffle = new Button();
             btnPrevious = new Button();
             btnPlay = new Button();
             btnPause = new Button();
@@ -66,7 +67,6 @@
             videoPanel = new Panel();
             visualizationBox = new PictureBox();
             visualizationTimer = new System.Windows.Forms.Timer(components);
-            buttonShuffle = new Button();
             ((System.ComponentModel.ISupportInitialize)seekBar).BeginInit();
             controlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)volumeSlider).BeginInit();
@@ -103,7 +103,7 @@
             // seekBar
             // 
             seekBar.Location = new Point(12, 601);
-            seekBar.Maximum = 1000;
+            seekBar.Maximum = 10000;
             seekBar.Name = "seekBar";
             seekBar.Size = new Size(1068, 69);
             seekBar.TabIndex = 3;
@@ -121,6 +121,16 @@
             controlPanel.Name = "controlPanel";
             controlPanel.Size = new Size(748, 60);
             controlPanel.TabIndex = 4;
+            // 
+            // buttonShuffle
+            // 
+            buttonShuffle.Location = new Point(606, 9);
+            buttonShuffle.Name = "buttonShuffle";
+            buttonShuffle.Size = new Size(127, 40);
+            buttonShuffle.TabIndex = 5;
+            buttonShuffle.Text = "Shuffle ⇄";
+            buttonShuffle.UseVisualStyleBackColor = true;
+            buttonShuffle.Click += buttonShuffle_Click;
             // 
             // btnPrevious
             // 
@@ -228,16 +238,6 @@
             // visualizationTimer
             // 
             visualizationTimer.Interval = 50;
-            // 
-            // buttonShuffle
-            // 
-            buttonShuffle.Location = new Point(606, 9);
-            buttonShuffle.Name = "buttonShuffle";
-            buttonShuffle.Size = new Size(127, 40);
-            buttonShuffle.TabIndex = 5;
-            buttonShuffle.Text = "Shuffle ⇄";
-            buttonShuffle.UseVisualStyleBackColor = true;
-            buttonShuffle.Click += buttonShuffle_Click;
             // 
             // MediaPlayerForm
             // 

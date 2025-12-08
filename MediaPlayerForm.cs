@@ -97,7 +97,7 @@ namespace MediaPlayerApp
             UpdateUI();
         }
 
-        private void btnNext_Click(object sender, EventArgs e)
+       private void PlayNextTrackLogic()
         {
             var nextMedia = playlistManager.CurrentPlaylist.GetNextMedia();
             if (nextMedia != null)
@@ -106,8 +106,25 @@ namespace MediaPlayerApp
                 playbackController.Play();
                 UpdatePlaylistSelection();
                 UpdateUI();
+                StartVisualization(); 
+            }
+            else
+            {
+                // Stop playback when playlist finishes 
+                playbackController.Stop();
+                StopVisualization();
+                ClearVisualization();
+                UpdateUI();
             }
         }
+
+        // Step 4: The 'Next' button calls the new centralized logic.
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            PlayNextTrackLogic();
+        }
+
+   
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
@@ -219,7 +236,7 @@ namespace MediaPlayerApp
 
         private void PlaybackController_MediaEnded(object sender, EventArgs e)
         {
-            btnNext_Click(sender, e);
+            this.BeginInvoke(new MethodInvoker(PlayNextTrackLogic));
         }
 
         private void UpdateUI()
