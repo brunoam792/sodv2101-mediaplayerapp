@@ -31,11 +31,11 @@ namespace MediaPlayerApp
             MediaFiles.Remove(mediaFile);
         }
 
-        public void SufflePlaylist()
+        public void ShufflePlaylist()
         {
             Random rnd = new Random();
             MediaFiles = MediaFiles.OrderBy(x => rnd.Next()).ToList();
-            CurrentIndex = 0;
+            CurrentIndex = 0; // Reset index after shuffling
         }
 
         public MediaFile GetNextMedia()
@@ -50,7 +50,8 @@ namespace MediaPlayerApp
             if (Shuffle)
             {
                 Random rnd = new Random();
-                CurrentIndex = rnd.Next(MediaFiles.Count);
+                // Select a new random index, possibly the current one
+                CurrentIndex = rnd.Next(MediaFiles.Count); 
             }
             else
             {
@@ -58,9 +59,9 @@ namespace MediaPlayerApp
                 if (CurrentIndex >= MediaFiles.Count)
                 {
                     if (RepeatMode == RepeatMode.All)
-                        CurrentIndex = 0;
+                        CurrentIndex = 0; // Loop back to start
                     else
-                        return null;
+                        return null; // Stop playback
                 }
             }
 
@@ -74,7 +75,8 @@ namespace MediaPlayerApp
             CurrentIndex--;
             if (CurrentIndex < 0)
             {
-                CurrentIndex = RepeatMode == RepeatMode.All ? MediaFiles.Count - 1 : 0;
+                // Go to the last track if repeating the entire playlist
+                CurrentIndex = RepeatMode == RepeatMode.All ? MediaFiles.Count - 1 : 0; 
             }
 
             return MediaFiles[CurrentIndex];

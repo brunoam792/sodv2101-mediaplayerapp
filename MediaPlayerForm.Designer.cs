@@ -15,7 +15,6 @@
         private TrackBar volumeSlider;
         private TrackBar seekBar;
         private ListBox playlistBox;
-        private Label lblCurrentMedia;
         private Label lblTime;
         private System.Windows.Forms.Timer updateTimer;
         private MenuStrip menuStrip;
@@ -26,6 +25,13 @@
         private PictureBox visualizationBox;
         private System.Windows.Forms.Timer visualizationTimer;
         private Button buttonShuffle;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer;
+        private Label lblMetadataTitle;
+        private Label lblMetadataArtist;
+        private Label lblMetadataAlbum;
+        private Label lblMetadataYear;
+        private Label lblMetadataDuration;
+        // ----------------------------------------------
 
 
         /// <summary>
@@ -50,8 +56,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MediaPlayerForm));
             menuStrip = new MenuStrip();
-            lblCurrentMedia = new Label();
             lblTime = new Label();
             seekBar = new TrackBar();
             controlPanel = new Panel();
@@ -67,12 +73,19 @@
             playlistBox = new ListBox();
             updateTimer = new System.Windows.Forms.Timer(components);
             videoPanel = new Panel();
+            axWindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             visualizationBox = new PictureBox();
             visualizationTimer = new System.Windows.Forms.Timer(components);
+            lblMetadataDuration = new Label();
+            lblMetadataYear = new Label();
+            lblMetadataAlbum = new Label();
+            lblMetadataArtist = new Label();
+            lblMetadataTitle = new Label();
             ((System.ComponentModel.ISupportInitialize)seekBar).BeginInit();
             controlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)volumeSlider).BeginInit();
             videoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer).BeginInit();
             ((System.ComponentModel.ISupportInitialize)visualizationBox).BeginInit();
             SuspendLayout();
             // 
@@ -82,18 +95,9 @@
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(6, 3, 0, 3);
-            menuStrip.Size = new Size(1125, 24);
+            menuStrip.Size = new Size(1099, 24);
             menuStrip.TabIndex = 0;
             menuStrip.Text = "menuStrip1";
-            // 
-            // lblCurrentMedia
-            // 
-            lblCurrentMedia.Font = new Font("Arial", 12F, FontStyle.Bold);
-            lblCurrentMedia.Location = new Point(12, 716);
-            lblCurrentMedia.Name = "lblCurrentMedia";
-            lblCurrentMedia.Size = new Size(500, 40);
-            lblCurrentMedia.TabIndex = 1;
-            lblCurrentMedia.Text = "No media loaded";
             // 
             // lblTime
             // 
@@ -136,7 +140,6 @@
             buttonShuffle.TabIndex = 5;
             buttonShuffle.Text = "Shuffle ⇄";
             buttonShuffle.UseVisualStyleBackColor = true;
-            buttonShuffle.Click += buttonShuffle_Click;
             // 
             // btnPrevious
             // 
@@ -209,9 +212,10 @@
             // 
             // lblPlaylist
             // 
-            lblPlaylist.Location = new Point(12, 53);
+            lblPlaylist.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPlaylist.Location = new Point(12, 44);
             lblPlaylist.Name = "lblPlaylist";
-            lblPlaylist.Size = new Size(100, 535);
+            lblPlaylist.Size = new Size(100, 37);
             lblPlaylist.TabIndex = 7;
             lblPlaylist.Text = "Playlist:";
             // 
@@ -221,7 +225,7 @@
             playlistBox.Location = new Point(12, 85);
             playlistBox.Margin = new Padding(3, 4, 3, 4);
             playlistBox.Name = "playlistBox";
-            playlistBox.Size = new Size(154, 604);
+            playlistBox.Size = new Size(318, 604);
             playlistBox.TabIndex = 8;
             // 
             // updateTimer
@@ -232,12 +236,23 @@
             // 
             videoPanel.BackColor = Color.Black;
             videoPanel.BorderStyle = BorderStyle.FixedSingle;
+            videoPanel.Controls.Add(axWindowsMediaPlayer);
             videoPanel.Controls.Add(visualizationBox);
-            videoPanel.Location = new Point(182, 85);
+            videoPanel.Location = new Point(336, 85);
             videoPanel.Margin = new Padding(3, 4, 3, 4);
             videoPanel.Name = "videoPanel";
-            videoPanel.Size = new Size(899, 601);
+            videoPanel.Size = new Size(745, 601);
             videoPanel.TabIndex = 9;
+            // 
+            // axWindowsMediaPlayer
+            // 
+            axWindowsMediaPlayer.Dock = DockStyle.Fill;
+            axWindowsMediaPlayer.Enabled = true;
+            axWindowsMediaPlayer.Location = new Point(0, 0);
+            axWindowsMediaPlayer.Name = "axWindowsMediaPlayer";
+            axWindowsMediaPlayer.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer.OcxState");
+            axWindowsMediaPlayer.Size = new Size(743, 599);
+            axWindowsMediaPlayer.TabIndex = 11;
             // 
             // visualizationBox
             // 
@@ -245,7 +260,7 @@
             visualizationBox.Location = new Point(0, 0);
             visualizationBox.Margin = new Padding(3, 4, 3, 4);
             visualizationBox.Name = "visualizationBox";
-            visualizationBox.Size = new Size(897, 599);
+            visualizationBox.Size = new Size(743, 599);
             visualizationBox.TabIndex = 0;
             visualizationBox.TabStop = false;
             // 
@@ -253,37 +268,85 @@
             // 
             visualizationTimer.Interval = 50;
             // 
+            // lblMetadataDuration
+            // 
+            lblMetadataDuration.Font = new Font("Arial", 9F);
+            lblMetadataDuration.Location = new Point(775, 693);
+            lblMetadataDuration.Name = "lblMetadataDuration";
+            lblMetadataDuration.Size = new Size(158, 32);
+            lblMetadataDuration.TabIndex = 5;
+            lblMetadataDuration.Text = "Duration:";
+            // 
+            // lblMetadataYear
+            // 
+            lblMetadataYear.Font = new Font("Arial", 9F);
+            lblMetadataYear.Location = new Point(939, 693);
+            lblMetadataYear.Name = "lblMetadataYear";
+            lblMetadataYear.Size = new Size(141, 25);
+            lblMetadataYear.TabIndex = 4;
+            lblMetadataYear.Text = "Year:";
+            // 
+            // lblMetadataAlbum
+            // 
+            lblMetadataAlbum.Font = new Font("Arial", 11F);
+            lblMetadataAlbum.Location = new Point(398, 690);
+            lblMetadataAlbum.Name = "lblMetadataAlbum";
+            lblMetadataAlbum.Size = new Size(373, 35);
+            lblMetadataAlbum.TabIndex = 3;
+            lblMetadataAlbum.Text = "Album:";
+            // 
+            // lblMetadataArtist
+            // 
+            lblMetadataArtist.Font = new Font("Arial", 11F);
+            lblMetadataArtist.Location = new Point(15, 693);
+            lblMetadataArtist.Name = "lblMetadataArtist";
+            lblMetadataArtist.Size = new Size(377, 32);
+            lblMetadataArtist.TabIndex = 2;
+            lblMetadataArtist.Text = "Artist:";
+            // 
+            // lblMetadataTitle
+            // 
+            lblMetadataTitle.Font = new Font("Arial Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMetadataTitle.Location = new Point(336, 47);
+            lblMetadataTitle.Name = "lblMetadataTitle";
+            lblMetadataTitle.Size = new Size(745, 35);
+            lblMetadataTitle.TabIndex = 1;
+            lblMetadataTitle.Text = "Title:";
+            // 
             // MediaPlayerForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1125, 1000);
+            ClientSize = new Size(1099, 1000);
+            Controls.Add(lblMetadataDuration);
+            Controls.Add(lblMetadataYear);
             Controls.Add(videoPanel);
+            Controls.Add(lblMetadataAlbum);
             Controls.Add(playlistBox);
+            Controls.Add(lblMetadataArtist);
             Controls.Add(lblPlaylist);
+            Controls.Add(lblMetadataTitle);
             Controls.Add(volumeSlider);
             Controls.Add(lblVolume);
             Controls.Add(controlPanel);
             Controls.Add(seekBar);
             Controls.Add(lblTime);
-            Controls.Add(lblCurrentMedia);
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
             Margin = new Padding(3, 4, 3, 4);
             Name = "MediaPlayerForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Media Player";
-            Load += MediaPlayerForm_Load;
             ((System.ComponentModel.ISupportInitialize)seekBar).EndInit();
             controlPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)volumeSlider).EndInit();
             videoPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer).EndInit();
             ((System.ComponentModel.ISupportInitialize)visualizationBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
     }
 }

@@ -46,14 +46,17 @@ namespace MediaPlayerApp
 
         public void GetRecentlyPlayed()
         {
-            // Returns most recent 20 played items
+            // Logic to return the most recent 20 played items
         }
 
         public void SetMostPlayed()
         {
-            // Track play counts
+            // Logic to track and sort by play counts
         }
 
+        /// <summary>
+        /// Prompts the user to select media files and adds them to the library.
+        /// </summary>
         public void LoadLibrary()
         {
             var files = FileManager.BrowseFiles();
@@ -65,7 +68,7 @@ namespace MediaPlayerApp
 
         public void SaveLibrary()
         {
-            // Save library state
+            // Logic to save library state (e.g., to an XML or JSON file)
         }
     }
 }

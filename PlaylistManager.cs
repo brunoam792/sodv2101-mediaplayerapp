@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace MediaPlayerApp
@@ -27,15 +28,55 @@ namespace MediaPlayerApp
             Playlists.Remove(playlist);
         }
 
-        public void LoadPlaylist(string filePath)
+        /// <summary>
+        /// Reads an M3U/MPL file and extracts media file paths.
+        /// </summary>
+        public List<string> LoadPlaylist(string filePath)
         {
-            Playlist playlist = new Playlist(filePath);
-            Playlists.Add(playlist);
-        }
+            List<string> filePaths = new List<string>();
 
-        public void SavePlaylist(Playlist playlist)
-        {
-            // Save playlist to file
+            if (!File.Exists(filePath))
+            {
+                return filePaths;
+            }
+
+            try
+            {
+                var lines = File.ReadAllLines(filePath);
+                string playlistDirectory = Path.GetDirectoryName(filePath);
+
+                foreach (var line in lines)
+                {
+                    string trimmedLine = line.Trim();
+
+                    // Ignore empty lines or comments (M3U tags)
+                    if (string.IsNullOrWhiteSpace(trimmedLine) || trimmedLine.StartsWith("#"))
+                    {
+                        continue;
+                    }
+
+                    string fullPath = trimmedLine;
+
+                    // Handle relative paths
+                    if (!Path.IsPathRooted(fullPath))
+                    {
+                        fullPath = Path.Combine(playlistDirectory, fullPath);
+                    }
+
+                    // Add the path if the file exists
+                    if (File.Exists(fullPath))
+                    {
+                        filePaths.Add(fullPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Error reading file
+                System.Diagnostics.Debug.WriteLine($"Error reading playlist: {ex.Message}");
+            }
+
+            return filePaths;
         }
 
         public List<Playlist> GetAllPlaylists()

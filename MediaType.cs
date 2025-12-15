@@ -10,8 +10,8 @@ namespace MediaPlayerApp
 
     public enum RepeatMode
     {
-        None,
-        One,
-        All
+        None, // Stop when the playlist ends
+        One,  // Repeat the current track indefinitely
+        All   // Loop the entire playlist
     }
 }
